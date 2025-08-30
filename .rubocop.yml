@@ -1,0 +1,49 @@
+# .rubocop.yml
+AllCops:
+  TargetRubyVersion: 2.6
+  NewCops: enable
+
+# Allow longer methods for cryptographic implementations
+Metrics/MethodLength:
+  Max: 30
+
+Metrics/AbcSize:
+  Max: 60
+
+Metrics/ClassLength:
+  Max: 300
+
+Metrics/CollectionLiteralLength:
+  Enabled: false
+
+# Allow nested method definitions in KIASU-BC implementation
+Lint/NestedMethodDefinition:
+  Enabled: false
+
+# Allow short parameter names in cryptographic functions
+Naming/MethodParameterName:
+  Enabled: false
+
+# Allow identical conditional branches in tests
+Style/IdenticalConditionalBranches:
+  Enabled: false
+
+# Allow ambiguous operator precedence in cryptographic code
+Lint/AmbiguousOperatorPrecedence:
+  Enabled: false
+
+# Allow bitwise predicate suggestions
+Style/BitwisePredicate:
+  Enabled: false
+
+# Allow negated if-else conditions
+Style/NegatedIfElseCondition:
+  Enabled: false
+
+# Don't require MFA for gemspec
+Gemspec/RequireMFA:
+  Enabled: false
+
+# Allow development dependencies in gemspec
+Gemspec/DevelopmentDependencies:
+  Enabled: false
