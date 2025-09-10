@@ -27,6 +27,10 @@ Lint/NestedMethodDefinition:
 Naming/MethodParameterName:
   Enabled: false
 
+# Allow underscores in method names with hex numbers (e.g., gf_mul_09)
+Naming/VariableNumber:
+  Enabled: false
+
 # Allow identical conditional branches in tests
 Style/IdenticalConditionalBranches:
   Enabled: false

@@ -32,7 +32,7 @@ task :build do
 end
 
 desc 'Install the gem locally'
-task :install => :build do
+task install: :build do
   sh "gem install ./ipcrypt2-#{IPCrypt::VERSION}.gem"
 end
 
