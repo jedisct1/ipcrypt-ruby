@@ -5,10 +5,13 @@ AllCops:
 
 # Allow longer methods for cryptographic implementations
 Metrics/MethodLength:
-  Max: 30
+  Max: 45
 
 Metrics/AbcSize:
   Max: 60
+
+Metrics/PerceivedComplexity:
+  Max: 10
 
 Metrics/ClassLength:
   Max: 300

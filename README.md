@@ -6,11 +6,13 @@ This gem provides privacy-preserving methods for storing, logging, and analyzing
 
 ## Features
 
-- **Three encryption modes:**
+- **Four encryption modes:**
   - `ipcrypt-deterministic`: Deterministic encryption using AES-128 (same input always produces same output)
+  - `ipcrypt-pfx`: Prefix-preserving encryption that maintains network relationships while encrypting addresses
   - `ipcrypt-nd`: Non-deterministic encryption using KIASU-BC with 8-byte tweak
   - `ipcrypt-ndx`: Non-deterministic encryption using AES-XTS with 16-byte tweak
 - **Full IPv4 and IPv6 support** with automatic conversion to unified 16-byte format
+- **Prefix preservation** with ipcrypt-pfx for network-level analytics while protecting individual addresses
 - **Secure implementations** using OpenSSL for cryptographic operations
 - **Comprehensive test suite** with official test vectors from the specification
 - **Ruby 2.6+ compatibility**
@@ -68,6 +70,24 @@ encrypted_data = IPCrypt::ND.encrypt(ip, key, tweak)  # Specific tweak
 
 # Decrypt
 decrypted_ip = IPCrypt::ND.decrypt(encrypted_data, key)
+```
+
+### Prefix-Preserving Encryption (ipcrypt-pfx)
+
+```ruby
+require 'ipcrypt/pfx'
+
+# 32-byte key (split into two AES-128 keys internally)
+key = "0123456789abcdeffedcba98765432101032547698badcfeefcdab8967452301".scan(/../).map { |x| x.hex }.pack("C*")
+
+# Encrypt IP addresses - addresses from the same network share encrypted prefix
+ip1 = "10.0.0.1"
+ip2 = "10.0.0.2"
+encrypted_ip1 = IPCrypt::Pfx.encrypt(ip1, key)  # "154.135.56.208"
+encrypted_ip2 = IPCrypt::Pfx.encrypt(ip2, key)  # "154.135.56.211" (same /24 prefix)
+
+# Decrypt
+decrypted_ip1 = IPCrypt::Pfx.decrypt(encrypted_ip1, key)  # Returns "10.0.0.1"
 ```
 
 ### Non-Deterministic Encryption with AES-XTS (ipcrypt-ndx)
@@ -300,6 +320,7 @@ end
 
 2. **Choose the Right Mode**:
    - Use `deterministic` for logs and analytics where you need to correlate multiple requests from the same IP
+   - Use `pfx` for network-level analytics where you need to preserve subnet relationships while encrypting individual addresses
    - Use `nd` or `ndx` for storage where each encryption should be unique
 
 3. **Performance**: For high-traffic applications, consider caching the key parsing:
